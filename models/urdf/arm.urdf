@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <robot name="arm">
     <link name="world"/>
 
@@ -29,7 +28,7 @@
         <child link="base_link"/>
     </joint>
 
-    <link name="link_1">
+    <link name="shoulder_link">
         <inertial>
             <mass value="0.5"/>
             <origin xyz="0 0 0.1" rpy="0 0 0"/>
@@ -49,15 +48,15 @@
         </collision>
     </link>
 
-    <joint name="joint_1" type="revolute">
+    <joint name="joint_1_hip" type="revolute">
         <parent link="base_link"/>
-        <child link="link_1"/>
+        <child link="shoulder_link"/>
         <axis xyz="0 0 1"/>
         <origin xyz="0 0 0.1" rpy="0 0 0"/>
         <limit lower="-3.14" upper="3.14" effort="100" velocity="1.0"/>
     </joint>
 
-    <link name="link_2">
+    <link name="upper_arm_link">
         <inertial>
             <mass value="0.5"/>
             <origin xyz="0 0 0.25" rpy="0 0 0"/>
@@ -77,15 +76,15 @@
         </collision>
     </link>
 
-    <joint name="joint_2" type="revolute">
-        <parent link="link_1"/>
-        <child link="link_2" />
+    <joint name="joint_2_shoulder" type="revolute">
+        <parent link="shoulder_link"/>
+        <child link="upper_arm_link" />
         <origin xyz="0 -0.175 0.15" rpy="0 0 0"/>
         <axis xyz="0 1 0"/>
         <limit lower="-1.57" upper="1.57" effort="100" velocity="1.0"/>
     </joint>
 
-    <link name="link_3">
+    <link name="forearm_link">
         <inertial>
             <mass value="0.5"/>
             <origin xyz="0 0 0.2" rpy="0 0 0"/>
@@ -105,15 +104,15 @@
         </collision>
     </link>
 
-    <joint name="joint_3" type="revolute">
-        <parent link="link_2"/>
-        <child link="link_3"/>
+    <joint name="joint_3_elbow" type="revolute">
+        <parent link="upper_arm_link"/>
+        <child link="forearm_link"/>
         <axis xyz="0 1 0"/>
         <origin xyz="0 0.125 0.45" rpy="0 0 0"/>
         <limit lower="-2.35" upper="2.35" effort="100" velocity="1.0"/>
     </joint>
 
-    <link name="link_4">
+    <link name="wrist_link">
          <inertial>
             <mass value="0.5"/>
             <origin xyz="0 0 0.05" rpy="0 0 0"/>
@@ -133,9 +132,9 @@
         </collision>
     </link>
 
-    <joint name="joint_4" type="revolute">
-        <parent link="link_3"/>
-        <child link="link_4"/>
+    <joint name="joint_4_wrist" type="revolute">
+        <parent link="forearm_link"/>
+        <child link="wrist_link"/>
         <axis xyz="0 1 0"/>
         <origin xyz="0 0 0.45" rpy="0 0 0"/>
         <limit lower="-1.57" upper="1.57" effort="100" velocity="1.0"/>
