@@ -1,47 +1,54 @@
-<mujoco model="arm_4dof">
-  <compiler angle="degree"/>
+<mujoco model="arm">
+  <compiler angle="radian" />
 
-  <!-- 1. Default values (biar ga nulis atribut sama berulang-ulang) -->
   <default>
-    <joint damping="0" range="-90 90"/>
     <geom contype="0" conaffinity="0"/>
   </default>
 
-  <!-- 4. Struktur fisik: body tree -->
   <worldbody>
-    <light diffuse=".6 .6 .6" pos="0 0 3" dir="0 0 -1"/>
-    <geom type="plane" size="2 2 0.1" rgba=".9 .9 .9 1"/>
+    <light diffuse="0.9 0.9 0.9" pos="0 0 10" dir="0 0 -1"/>
+    <geom type="plane" size="5 5 0.1" material="white_grey"/>
 
-    <!-- Base / pedestal (fixed to world) -->
-    <body name="base" pos="0 0 0.1">
-      <geom type="cylinder" size="0.1 0.1" rgba="0.3 0.3 0.3 1"/>
+    <body name="world_link" pos="0 0 0">
+      <body name="base_link">
+        <geom name="base_link" pos="0 0 0.05" type="cylinder" size="0.2 0.05" material="dark_grey"/>
 
-      <!-- Joint 1: base yaw (sumbu Z) -->
-      <body name="link1" pos="0 0 0.1">
-        <joint name="j1_base_yaw" type="hinge" axis="0 0 1" range="-180 180"/>
-        <geom type="cylinder" size="0.06 0.08" rgba="0.8 0.2 0.2 1"/>
+        <body name="shoulder_link" pos="0 0 0.1">
+          <joint name="joint_1_hip" type="hinge" range="-3.14 3.14" axis="0 0 1" />
+          <geom name="shoulder_link" pos="0 0 0.1" type="cylinder" size="0.1 0.1" material="blue"/>
 
-        <!-- Joint 2: shoulder pitch (sumbu Y) -->
-        <body name="link2" pos="0 0 0.08">
-          <joint name="j2_shoulder_pitch" type="hinge" axis="0 1 0" range="-90 90"/>
-          <geom type="capsule" fromto="0 0 0  0 0 0.35" size="0.045" rgba="0.2 0.6 0.8 1"/>
+          <body name="upper_arm_link" pos="0 -0.175 0.15">
+            <joint name="joint_2_shoulder" type="hinge" range="-1.57 1.57" axis="0 1 0" />
+            <geom name="upper_arm_link" pos="0 0 0.25" type="cylinder" size="0.075 0.25" material="orange"/>
 
-          <!-- Joint 3: elbow pitch (sumbu Y) -->
-          <body name="link3" pos="0 0 0.35">
-            <joint name="j3_elbow_pitch" type="hinge" axis="0 1 0" range="-150 150"/>
-            <geom type="capsule" fromto="0 0 0  0 0 0.28" size="0.04" rgba="0.2 0.8 0.4 1"/>
+            <body name="forearm_link" pos="0 0.125 0.45">
+              <joint name="joint_3_elbow" type="hinge" range="-2.35 2.35" axis="0 1 0" />
+              <geom name="forearm_link" pos="0 0 0.2" type="cylinder" size="0.05 0.25" material="teal"/>
 
-            <!-- Joint 4: wrist pitch (sumbu Y) -->
-            <body name="link4" pos="0 0 0.28">
-              <joint name="j4_wrist_pitch" type="hinge" axis="0 1 0" range="-100 100"/>
-              <geom type="capsule" fromto="0 0 0  0 0 0.15" size="0.03" rgba="0.9 0.7 0.1 1"/>
-
-              <!-- End effector marker -->
-              <site name="ee_site" pos="0 0 0.15" size="0.02" rgba="1 0 0 1"/>
+              <body name="wrist_link" pos="0 0 0.45">
+                <joint name="joint_4_wrist" type="hinge" range="-1.57 1.57" axis="0 1 0" />
+                <geom name="wrist_link" pos="0 0 0.05" type="cylinder" size="0.05 0.05" material="yellow"/>
+              </body>
             </body>
           </body>
         </body>
       </body>
     </body>
   </worldbody>
+
+  <asset>
+    <material name="white_grey" rgba="0.85 0.85 0.85 1" />
+    <material name="dark_grey" rgba="0.2 0.2 0.2 1" />
+    <material name="blue" rgba="0.0 0.4 0.8 1" />
+    <material name="orange" rgba="0.9 0.45 0.1 1" />
+    <material name="teal" rgba="0.0 0.6 0.6 1" />
+    <material name="yellow" rgba="0.95 0.75 0.1 1" />
+  </asset>
+
+  <actuator>
+    <motor name="joint_1_hip" joint="joint_1_hip" />
+    <motor name="joint_2_shoulder" joint="joint_2_shoulder" />
+    <motor name="joint_3_elbow" joint="joint_3_elbow" />
+    <motor name="joint_4_wrist" joint="joint_4_wrist" />
+  </actuator>
 </mujoco>
