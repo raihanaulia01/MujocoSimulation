@@ -51,4 +51,11 @@
     <motor name="joint_3_elbow" joint="joint_3_elbow" />
     <motor name="joint_4_wrist" joint="joint_4_wrist" />
   </actuator>
+
+  <sensor>
+    <jointpos name="joint_1_hip_pos" joint="joint_1_hip"/>
+    <jointpos name="joint_2_shoulder_pos" joint="joint_2_shoulder"/>
+    <jointpos name="joint_3_elbow_pos" joint="joint_3_elbow"/>
+    <jointpos name="joint_4_wrist_pos" joint="joint_4_wrist"/>
+  </sensor>
 </mujoco>
