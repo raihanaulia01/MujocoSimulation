@@ -1,5 +1,6 @@
 #include <GLFW/glfw3.h>
 #include <mujoco/mujoco.h>
+#include <iostream>
 
 mjModel *m = nullptr;
 mjData *d = nullptr;
@@ -8,12 +9,48 @@ mjvCamera cam;
 mjvOption opt;
 mjrContext con;
 
-void mouse_button_callback(GLFWwindow *window, int button, int action,
-                           int mods) {}
+bool buttonLeft = false, buttonMiddle = false, buttonRight = false;
+double lastx = 0, lasty = 0;
 
-void mouse_move_callback(GLFWwindow *window, double xpos, double ypos) {}
+void mouse_button_callback(GLFWwindow *window, int button, int action,
+                           int mods) {
+  if (button == GLFW_MOUSE_BUTTON_LEFT)
+    buttonLeft = (action == GLFW_PRESS) ? true : (action == GLFW_RELEASE ? false : buttonLeft);
+  if (button == GLFW_MOUSE_BUTTON_MIDDLE)
+    buttonMiddle = (action == GLFW_PRESS) ? true : (action == GLFW_RELEASE ? false : buttonMiddle);
+  if (button == GLFW_MOUSE_BUTTON_RIGHT)
+    buttonRight = (action == GLFW_PRESS) ? true : (action == GLFW_RELEASE ? false : buttonRight);
+
+  glfwGetCursorPos(window, &lastx, &lasty);
+}
+
+void mouse_move_callback(GLFWwindow *window, double xpos, double ypos) {
+  if (!buttonLeft && !buttonRight && !buttonMiddle) {
+    lastx = xpos;
+    lasty = ypos;
+    return;
+  }
+
+  int fbw = 0, fbh = 1;
+  glfwGetFramebufferSize(window, &fbw, &fbh);
+  if (fbh <= 0) fbh = 1;
+
+  double dx = (xpos - lastx) / (double)fbh;
+  double dy = (ypos - lasty) / (double)fbh;
+  lastx = xpos;
+  lasty = ypos;
+
+  if (buttonLeft) {
+    mjv_moveCamera(m, mjMOUSE_ROTATE_H, dx, dy, &scn, &cam);
+  } else if (buttonRight) {
+    mjv_moveCamera(m, mjMOUSE_MOVE_H, dx, dy, &scn, &cam);
+  } else if (buttonMiddle) {
+    mjv_moveCamera(m, mjMOUSE_ZOOM, dx, dy, &scn, &cam);
+  }
+}
 
 void mouse_scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
+  mjv_moveCamera(m, mjMOUSE_ZOOM, 0, 0.025 * yoffset, &scn, &cam);
 }
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action,
@@ -63,9 +100,12 @@ int main() {
   mjv_makeScene(m, &scn, 6700);
   mjr_makeContext(m, &con, mjFONTSCALE_100);
 
+  // TODO add lastjointpos so it only updates when joint pos changes?
   while (!glfwWindowShouldClose(window)) {
     mj_step(m, d);
-
+    for (int i = 0; i < 4; i++) {
+      std::cout << "Joint " << i+1 << ": " << d->qpos[i] << std::endl;
+    }
     mjrRect viewport = {0, 0, 0, 0};
     glfwGetFramebufferSize(window, &viewport.width, &viewport.height);
 
