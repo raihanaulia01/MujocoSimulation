@@ -12,8 +12,14 @@ set(MUJOCO_INCLUDE_DIRS /usr/local/include/mujoco/)
 set(MUJOCO_LIBRARIES /usr/local/lib/libmujoco.so.3.2.7)
 
 include_directories(include)
-# add_library(simlibs)
+add_library(simlibs src/callbacks/callbacks.cpp src/control/control.cpp src/sim/sim.cpp)
+target_include_directories(simlibs PUBLIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/callbacks
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/control
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/sim
+  ${GLFW_INCLUDE_DIRS}
+  ${MUJOCO_INCLUDE_DIRS}
+)
+
 add_executable(sim src/main.cpp)
-target_include_directories(sim PRIVATE $(MUJOCO_INCLUDE_DIRS) $(GLFW_INCLUDE_DIRS))
-target_link_libraries(sim PRIVATE ${MUJOCO_LIBRARIES} ${GLFW_LIBRARIES})
-# target_link_libraries(sim simlibs)
+target_link_libraries(sim PRIVATE simlibs ${MUJOCO_LIBRARIES} ${GLFW_LIBRARIES})
