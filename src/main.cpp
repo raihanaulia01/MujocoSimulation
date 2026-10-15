@@ -11,6 +11,7 @@ mjrContext con;
 
 bool buttonLeft = false, buttonMiddle = false, buttonRight = false;
 double lastx = 0, lasty = 0;
+double jointPos[] = {0, 0, 0, 0};
 
 void mouse_button_callback(GLFWwindow *window, int button, int action,
                            int mods) {
@@ -55,8 +56,20 @@ void mouse_scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action,
                   int mods) {
-  if (action != GLFW_PRESS)
+  if (action != GLFW_PRESS && action != GLFW_REPEAT)
     return;
+
+  double step = 0.05;
+  switch (key) {
+    case GLFW_KEY_Z: jointPos[0] -= step; break;
+    case GLFW_KEY_A: jointPos[0] += step; break;
+    case GLFW_KEY_S: jointPos[1] += step; break;
+    case GLFW_KEY_X: jointPos[1] -= step; break;
+    case GLFW_KEY_D: jointPos[2] += step; break;
+    case GLFW_KEY_C: jointPos[2] -= step; break;
+    case GLFW_KEY_F: jointPos[3] += step; break;
+    case GLFW_KEY_V: jointPos[3] -= step; break;
+  }
 }
 
 void glfw_error_callback(int error_code, const char *desc) {
@@ -102,10 +115,16 @@ int main() {
 
   // TODO add lastjointpos so it only updates when joint pos changes?
   while (!glfwWindowShouldClose(window)) {
-    mj_step(m, d);
     for (int i = 0; i < 4; i++) {
-      std::cout << "Joint " << i+1 << ": " << d->qpos[i] << std::endl;
+      // check joint limits, stored in i*2 for min and i*2 + 1 for max
+      double jointMin = m->jnt_range[i*2];
+      double jointMax = m->jnt_range[i*2 + 1];
+      if (jointPos[i] > jointMax) jointPos[i] = jointMax;
+      else if (jointPos[i] < jointMin) jointPos[i] = jointMin;
+      d->qpos[i] = jointPos[i];
     }
+
+    mj_forward(m, d);
     mjrRect viewport = {0, 0, 0, 0};
     glfwGetFramebufferSize(window, &viewport.width, &viewport.height);
 
