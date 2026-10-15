@@ -3,6 +3,7 @@
 
   <default>
     <geom contype="0" conaffinity="0"/>
+    <joint damping="0"/>
   </default>
 
   <worldbody>
@@ -14,19 +15,19 @@
         <geom name="base_link" pos="0 0 0.05" type="cylinder" size="0.2 0.05" material="dark_grey"/>
 
         <body name="shoulder_link" pos="0 0 0.1">
-          <joint name="joint_1_hip" type="hinge" range="-3.14 3.14" axis="0 0 1" />
+          <joint name="joint_1_hip" type="hinge" range="-3.14 3.14" axis="0 0 1" limited="true"/>
           <geom name="shoulder_link" pos="0 0 0.1" type="cylinder" size="0.1 0.1" material="blue"/>
 
           <body name="upper_arm_link" pos="0 -0.175 0.15">
-            <joint name="joint_2_shoulder" type="hinge" range="-1.57 1.57" axis="0 1 0" />
+            <joint name="joint_2_shoulder" type="hinge" range="-1.57 1.57" axis="0 1 0" limited="true"/>
             <geom name="upper_arm_link" pos="0 0 0.25" type="cylinder" size="0.075 0.25" material="orange"/>
 
             <body name="forearm_link" pos="0 0.125 0.45">
-              <joint name="joint_3_elbow" type="hinge" range="-2.35 2.35" axis="0 1 0" />
+              <joint name="joint_3_elbow" type="hinge" range="-2.35 2.35" axis="0 1 0" limited="true"/>
               <geom name="forearm_link" pos="0 0 0.2" type="cylinder" size="0.05 0.25" material="teal"/>
 
               <body name="wrist_link" pos="0 0 0.45">
-                <joint name="joint_4_wrist" type="hinge" range="-1.57 1.57" axis="0 1 0" />
+                <joint name="joint_4_wrist" type="hinge" range="-1.57 1.57" axis="0 1 0" limited="true"/>
                 <geom name="wrist_link" pos="0 0 0.05" type="cylinder" size="0.05 0.05" material="yellow"/>
               </body>
             </body>
@@ -46,10 +47,10 @@
   </asset>
 
   <actuator>
-    <motor name="joint_1_hip" joint="joint_1_hip" />
-    <motor name="joint_2_shoulder" joint="joint_2_shoulder" />
-    <motor name="joint_3_elbow" joint="joint_3_elbow" />
-    <motor name="joint_4_wrist" joint="joint_4_wrist" />
+    <position name="joint_1_hip" joint="joint_1_hip" kp="500" ctrlrange="-3.14 3.14"/>
+    <position name="joint_2_shoulder" joint="joint_2_shoulder" kp="500" ctrlrange="-1.57 1.57"/>
+    <position name="joint_3_elbow" joint="joint_3_elbow" kp="500" ctrlrange="-2.35 2.35"/>
+    <position name="joint_4_wrist" joint="joint_4_wrist" kp="500" ctrlrange="-1.57 1.57"/>
   </actuator>
 
   <sensor>
