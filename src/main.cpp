@@ -1,6 +1,6 @@
 #include <GLFW/glfw3.h>
-#include <mujoco/mujoco.h>
 #include <iostream>
+#include <mujoco/mujoco.h>
 
 mjModel *m = nullptr;
 mjData *d = nullptr;
@@ -13,14 +13,27 @@ bool buttonLeft = false, buttonMiddle = false, buttonRight = false;
 double lastx = 0, lasty = 0;
 double jointPos[] = {0, 0, 0, 0};
 
+void print_joint_positions() {
+  std::cout << "Joint " << 1 << ": " << jointPos[0] << " rad\n";
+  std::cout << "Joint " << 2 << ": " << jointPos[1] << " rad\n";
+  std::cout << "Joint " << 3 << ": " << jointPos[2] << " rad\n";
+  std::cout << "Joint " << 4 << ": " << jointPos[3] << " rad\n\n";
+}
+
 void mouse_button_callback(GLFWwindow *window, int button, int action,
                            int mods) {
   if (button == GLFW_MOUSE_BUTTON_LEFT)
-    buttonLeft = (action == GLFW_PRESS) ? true : (action == GLFW_RELEASE ? false : buttonLeft);
+    buttonLeft = (action == GLFW_PRESS)
+                     ? true
+                     : (action == GLFW_RELEASE ? false : buttonLeft);
   if (button == GLFW_MOUSE_BUTTON_MIDDLE)
-    buttonMiddle = (action == GLFW_PRESS) ? true : (action == GLFW_RELEASE ? false : buttonMiddle);
+    buttonMiddle = (action == GLFW_PRESS)
+                       ? true
+                       : (action == GLFW_RELEASE ? false : buttonMiddle);
   if (button == GLFW_MOUSE_BUTTON_RIGHT)
-    buttonRight = (action == GLFW_PRESS) ? true : (action == GLFW_RELEASE ? false : buttonRight);
+    buttonRight = (action == GLFW_PRESS)
+                      ? true
+                      : (action == GLFW_RELEASE ? false : buttonRight);
 
   glfwGetCursorPos(window, &lastx, &lasty);
 }
@@ -34,7 +47,8 @@ void mouse_move_callback(GLFWwindow *window, double xpos, double ypos) {
 
   int fbw = 0, fbh = 1;
   glfwGetFramebufferSize(window, &fbw, &fbh);
-  if (fbh <= 0) fbh = 1;
+  if (fbh <= 0)
+    fbh = 1;
 
   double dx = (xpos - lastx) / (double)fbh;
   double dy = (ypos - lasty) / (double)fbh;
@@ -70,6 +84,18 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
     case GLFW_KEY_F: jointPos[3] += step; break;
     case GLFW_KEY_V: jointPos[3] -= step; break;
   }
+
+  // check joint limits, stored in i*2 for min and i*2 + 1 for max
+  for (int i = 0; i < 4; i++) {
+    double jointMin = m->jnt_range[i * 2];
+    double jointMax = m->jnt_range[i * 2 + 1];
+    if (jointPos[i] > jointMax)
+      jointPos[i] = jointMax;
+    else if (jointPos[i] < jointMin)
+      jointPos[i] = jointMin;
+  }
+
+  print_joint_positions();
 }
 
 void glfw_error_callback(int error_code, const char *desc) {
@@ -113,14 +139,8 @@ int main() {
   mjv_makeScene(m, &scn, 6700);
   mjr_makeContext(m, &con, mjFONTSCALE_100);
 
-  // TODO add lastjointpos so it only updates when joint pos changes?
   while (!glfwWindowShouldClose(window)) {
     for (int i = 0; i < 4; i++) {
-      // check joint limits, stored in i*2 for min and i*2 + 1 for max
-      double jointMin = m->jnt_range[i*2];
-      double jointMax = m->jnt_range[i*2 + 1];
-      if (jointPos[i] > jointMax) jointPos[i] = jointMax;
-      else if (jointPos[i] < jointMin) jointPos[i] = jointMin;
       d->qpos[i] = jointPos[i];
     }
 
