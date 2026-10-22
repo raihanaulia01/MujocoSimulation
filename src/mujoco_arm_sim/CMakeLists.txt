@@ -215,14 +215,14 @@ catkin_package(
     sensor_msgs
 )
 
-set(MUJOCO_INCLUDE_DIRS /usr/local/include/mujoco/)
+set(MUJOCO_INCLUDE_DIRS /usr/local/include/)
 set(MUJOCO_LIBRARIES /usr/local/lib/libmujoco.so.3.2.7)
 
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
   ${GLFW_INCLUDE_DIRS}
-  ${MUJOCO_INCLUDE_DIR}
+  ${MUJOCO_INCLUDE_DIRS}
 )
 
 add_executable(mujoco_arm_node
