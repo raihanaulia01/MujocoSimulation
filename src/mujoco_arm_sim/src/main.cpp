@@ -6,7 +6,7 @@ int main() {
   glfwSetErrorCallback(callbacks::glfw_error_callback);
   Simulation sim;
 
-  if (!sim.initialize("../models/arm.xml"))
+  if (!sim.initialize("src/mujoco_arm_sim/models/arm.xml"))
     return 1;
 
   RobotController ctrl(sim.m);
