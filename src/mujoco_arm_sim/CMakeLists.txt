@@ -230,6 +230,7 @@ add_executable(mujoco_arm_node
   src/callbacks/callbacks.cpp
   src/control/control.cpp
   src/sim/sim.cpp
+  src/ros_interface/ros_interface.cpp
 )
 
 target_link_libraries(mujoco_arm_node ${catkin_LIBRARIES} ${MUJOCO_LIBRARIES} ${GLFW_LIBRARIES})

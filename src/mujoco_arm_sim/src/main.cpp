@@ -2,6 +2,7 @@
 #include "callbacks.hpp"
 #include "control.hpp"
 #include "sim.hpp"
+#include "ros_interface.hpp"
 
 int main(int argc, char **argv) {
   ros::init(argc, argv, "mujoco_arm_sim");
@@ -20,9 +21,9 @@ int main(int argc, char **argv) {
     return 1;
 
   RobotController ctrl(sim.m);
-
+  RosInterface rosInterface(nh, ctrl);
   callbacks::initialize(&sim, &ctrl, sim.window);
 
-  sim.run(ctrl);
+  sim.run(ctrl, rosInterface);
   return 0;
 }

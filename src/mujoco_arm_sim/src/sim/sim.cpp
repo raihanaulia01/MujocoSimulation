@@ -43,11 +43,14 @@ bool Simulation::initialize(const char *robotModelPath) {
   return true;
 }
 
-void Simulation::run(const RobotController &ctrl) {
+void Simulation::run(const RobotController &ctrl, RosInterface &rosInterface) {
   while (!glfwWindowShouldClose(window)) {
-    ctrl.applyJointPos(d);
+    ros::spinOnce();
 
+    ctrl.applyJointPos(d);
     mj_forward(m, d);
+
+    rosInterface.publishJointPos(d);
     mjrRect viewport = {0, 0, 0, 0};
     glfwGetFramebufferSize(window, &viewport.width, &viewport.height);
 
