@@ -5,7 +5,7 @@ RobotController::RobotController(const mjModel *m) : m(m) {}
 
 void RobotController::applyJointPos(mjData *d) const {
   for (int i = 0; i < 4; i++) {
-    d->qpos[i] = jointPos[i];
+    d->ctrl[i] = jointPos[i];
   }
 }
 

@@ -44,11 +44,11 @@ bool Simulation::initialize(const char *robotModelPath) {
 }
 
 void Simulation::run(const RobotController &ctrl, RosInterface &rosInterface) {
-  while (!glfwWindowShouldClose(window)) {
+  while (!glfwWindowShouldClose(window) && ros::ok()) {
     ros::spinOnce();
 
     ctrl.applyJointPos(d);
-    mj_forward(m, d);
+    mj_step(m, d);
 
     rosInterface.publishJointPos(d);
     mjrRect viewport = {0, 0, 0, 0};

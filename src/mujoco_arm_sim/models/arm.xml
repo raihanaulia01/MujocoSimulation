@@ -1,9 +1,14 @@
 <mujoco model="arm">
   <compiler angle="radian" />
 
+  <option
+    timestep="0.0167"
+    integrator="implicitfast"
+    iterations="50"
+    tolerance="1e-8"/>
+
   <default>
-    <geom contype="0" conaffinity="0"/>
-    <joint damping="0"/>
+    <joint damping="0.25" armature="0.02"/>
   </default>
 
   <worldbody>
@@ -47,10 +52,10 @@
   </asset>
 
   <actuator>
-    <position name="joint_1_hip" joint="joint_1_hip" kp="500" ctrlrange="-3.14 3.14"/>
-    <position name="joint_2_shoulder" joint="joint_2_shoulder" kp="500" ctrlrange="-1.57 1.57"/>
-    <position name="joint_3_elbow" joint="joint_3_elbow" kp="500" ctrlrange="-2.35 2.35"/>
-    <position name="joint_4_wrist" joint="joint_4_wrist" kp="500" ctrlrange="-1.57 1.57"/>
+    <position name="joint_1_hip" joint="joint_1_hip" kp="180" kv="30" ctrlrange="-3.14 3.14"/>
+    <position name="joint_2_shoulder" joint="joint_2_shoulder" kp="180" kv="30" ctrlrange="-1.57 1.57"/>
+    <position name="joint_3_elbow" joint="joint_3_elbow" kp="180" kv="30" ctrlrange="-2.35 2.35"/>
+    <position name="joint_4_wrist" joint="joint_4_wrist" kp="180" kv="30" ctrlrange="-1.57 1.57"/>
   </actuator>
 
   <sensor>
