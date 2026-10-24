@@ -11,8 +11,9 @@ private:
   ros::Subscriber commandSubscriber;
   ros::Publisher jointStatePublisher;
   RobotController &controller;
-  const char *jointNames[4] = {"joint_1_hip", "joint_2_shoulder",
-                               "joint_3_elbow", "joint_4_wrist"};
+  const char *jointNames[jointCount] = {"joint_1_hip", "joint_2_shoulder",
+                                        "joint_3_elbow", "joint_4_wrist",
+                                        "joint_5_roll"};
 
 public:
   RosInterface(ros::NodeHandle &nodeHandle, RobotController &controller);
