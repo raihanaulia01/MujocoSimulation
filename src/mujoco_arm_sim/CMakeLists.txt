@@ -237,3 +237,7 @@ target_link_libraries(mujoco_arm_node ${catkin_LIBRARIES} ${MUJOCO_LIBRARIES} ${
 add_dependencies(mujoco_arm_node
   ${catkin_EXPORTED_TARGETS}
 )
+
+add_executable(triangle_trajectory src/triangle_trajectory/triangle_trajectory.cpp)
+target_link_libraries(triangle_trajectory ${catkin_LIBRARIES})
+add_dependencies(triangle_trajectory ${catkin_EXPORTED_TARGETS})
