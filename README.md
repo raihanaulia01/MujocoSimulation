@@ -1,6 +1,9 @@
 # Mujoco Simulation
 A Ros-based Mujoco Simulation project controlling a primitive unrealistic robotic arm. This Project was made to fullfill an assignment from the Abinara-1 Research Team.
 
+## Simulation Preview
+<img width="2560" height="1600" alt="Simulation Preview" src="https://github.com/user-attachments/assets/eab42473-9dfa-414e-8b7a-d62c3294f07f" />
+
 ## Overview
 This project consists of:
 - A mujoco robotic arm model
