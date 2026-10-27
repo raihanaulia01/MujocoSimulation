@@ -38,6 +38,7 @@
                 <body name="roll_link" pos="0 -0.1 0">
                   <joint name="joint_5_roll" type="hinge" range="-3.14 3.14" axis="0 0 1" limited="true"/>
                   <geom name="roll_link" pos="0 0 0.05" type="cylinder" size="0.04 0.05" material="dark_grey"/>
+                  <site name="end_effector" pos="0 0 0.1" size="0.01" rgba="1 0 0 1"/>
                 </body>
               </body>
             </body>
