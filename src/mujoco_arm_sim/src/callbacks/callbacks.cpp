@@ -104,10 +104,16 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
   case GLFW_KEY_V:
     ctrl->jointPos[3] -= step;
     break;
+  case GLFW_KEY_G:
+    ctrl->jointPos[4] += step;
+    break;
+  case GLFW_KEY_B:
+    ctrl->jointPos[4] -= step;
+    break;
   }
 
   ctrl->checkJointLimits();
-  ctrl->printJointPos();
+  // ctrl->printJointPos();
 }
 
 } // namespace callbacks

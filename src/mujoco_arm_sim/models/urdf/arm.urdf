@@ -153,4 +153,32 @@
         <origin xyz="0 0 0.45" rpy="0 0 0"/>
         <limit lower="-1.57" upper="1.57" effort="100" velocity="1.0"/>
     </joint>
+
+    <link name="roll_link">
+        <inertial>
+            <mass value="0.2"/>
+            <origin xyz="0 0 0.05" rpy="0 0 0"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <cylinder length="0.1" radius="0.04"/>
+            </geometry>
+            <material name="dark_grey"/>
+            <origin xyz="0 0 0.05" rpy="0 0 0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="0.1" radius="0.04"/>
+            </geometry>
+            <origin xyz="0 0 0.05" rpy="0 0 0"/>
+        </collision>
+    </link>
+
+    <joint name="joint_5_roll" type="revolute">
+        <parent link="wrist_link"/>
+        <child link="roll_link"/>
+        <axis xyz="0 0 1"/>
+        <origin xyz="0 0 0.05" rpy="0 0 0"/>
+        <limit lower="-3.14" upper="3.14" effort="100" velocity="1.0"/>
+    </joint>
 </robot>

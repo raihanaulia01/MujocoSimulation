@@ -1,9 +1,14 @@
 <mujoco model="arm">
   <compiler angle="radian" />
 
+  <option
+    timestep="0.0167"
+    integrator="implicitfast"
+    iterations="50"
+    tolerance="1e-8"/>
+
   <default>
-    <geom contype="0" conaffinity="0"/>
-    <joint damping="0"/>
+    <joint damping="0.25" armature="0.02"/>
   </default>
 
   <worldbody>
@@ -28,7 +33,13 @@
 
               <body name="wrist_link" pos="0 0 0.45">
                 <joint name="joint_4_wrist" type="hinge" range="-1.57 1.57" axis="0 1 0" limited="true"/>
-                <geom name="wrist_link" pos="0 0 0.05" type="cylinder" size="0.05 0.05" material="yellow"/>
+                <geom name="wrist_link" pos="0 -0.1 0" type="cylinder" size="0.05 0.05" material="yellow"/>
+
+                <body name="roll_link" pos="0 -0.1 0">
+                  <joint name="joint_5_roll" type="hinge" range="-3.14 3.14" axis="0 0 1" limited="true"/>
+                  <geom name="roll_link" pos="0 0 0.05" type="cylinder" size="0.04 0.05" material="dark_grey"/>
+                  <site name="end_effector" pos="0 0 0.1" size="0.01" rgba="1 0 0 1"/>
+                </body>
               </body>
             </body>
           </body>
@@ -47,10 +58,11 @@
   </asset>
 
   <actuator>
-    <position name="joint_1_hip" joint="joint_1_hip" kp="500" ctrlrange="-3.14 3.14"/>
-    <position name="joint_2_shoulder" joint="joint_2_shoulder" kp="500" ctrlrange="-1.57 1.57"/>
-    <position name="joint_3_elbow" joint="joint_3_elbow" kp="500" ctrlrange="-2.35 2.35"/>
-    <position name="joint_4_wrist" joint="joint_4_wrist" kp="500" ctrlrange="-1.57 1.57"/>
+    <position name="joint_1_hip" joint="joint_1_hip" kp="180" kv="30" ctrlrange="-3.14 3.14"/>
+    <position name="joint_2_shoulder" joint="joint_2_shoulder" kp="180" kv="30" ctrlrange="-1.57 1.57"/>
+    <position name="joint_3_elbow" joint="joint_3_elbow" kp="180" kv="30" ctrlrange="-2.35 2.35"/>
+    <position name="joint_4_wrist" joint="joint_4_wrist" kp="180" kv="30" ctrlrange="-1.57 1.57"/>
+    <position name="joint_5_roll" joint="joint_5_roll" kp="180" kv="30" ctrlrange="-3.14 3.14"/>
   </actuator>
 
   <sensor>
@@ -58,5 +70,6 @@
     <jointpos name="joint_2_shoulder_pos" joint="joint_2_shoulder"/>
     <jointpos name="joint_3_elbow_pos" joint="joint_3_elbow"/>
     <jointpos name="joint_4_wrist_pos" joint="joint_4_wrist"/>
+    <jointpos name="joint_5_roll_pos" joint="joint_5_roll"/>
   </sensor>
 </mujoco>

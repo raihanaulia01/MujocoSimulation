@@ -4,6 +4,8 @@
 #include "control.hpp"
 #include <GLFW/glfw3.h>
 #include <mujoco/mujoco.h>
+#include "ros_interface.hpp"
+#include "ros/ros.h"
 
 class Simulation {
 public:
@@ -19,7 +21,7 @@ public:
   ~Simulation();
 
   bool initialize(const char *robotModelPath);
-  void run(const RobotController &ctrl);
+  void run(const RobotController &ctrl, RosInterface &rosInterface);
 };
 
 #endif
