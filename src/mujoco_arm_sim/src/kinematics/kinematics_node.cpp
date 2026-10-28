@@ -6,7 +6,7 @@ KinematicsNode::KinematicsNode(ros::NodeHandle &nh) {
   jointNames = {"joint_1_hip", "joint_2_shoulder", "joint_3_elbow",
                 "joint_4_wrist", "joint_5_roll"};
 
-  jointStateSub = nh.subscribe("/joint_states", 12,
+  jointStateSub = nh.subscribe("/joint_states", 1,
                                &KinematicsNode::jointStateCallback, this);
   targetPointSub = nh.subscribe("/target_point", 1,
                                 &KinematicsNode::targetPointCallback, this);
